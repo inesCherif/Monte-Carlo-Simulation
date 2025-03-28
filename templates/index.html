@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Islamic Concepts Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+      <h1 class="text-3xl font-bold text-center mb-6">
+        Islamic Concepts Monte Carlo Simulation
+      </h1>
+
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <div class="mb-4">
+          <label for="simulation-type" class="block mb-2"
+            >Select Simulation:</label
+          >
+          <select id="simulation-type" class="w-full p-2 border rounded">
+            <!-- Options will be dynamically populated -->
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label for="simulation-iterations" class="block mb-2"
+            >Number of Iterations:</label
+          >
+          <input
+            type="number"
+            id="simulation-iterations"
+            class="w-full p-2 border rounded"
+            value="10000"
+            min="1000"
+            max="100000"
+          />
+        </div>
+
+        <button
+          id="run-simulation"
+          class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+        >
+          Run Simulation
+        </button>
+
+        <div id="simulation-results" class="mt-6 p-4 bg-gray-50 rounded">
+          <!-- Results will be displayed here -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const simulationType = document.getElementById("simulation-type");
+        const simulationIterations = document.getElementById(
+          "simulation-iterations"
+        );
+        const runSimulationBtn = document.getElementById("run-simulation");
+        const resultsContainer = document.getElementById("simulation-results");
+
+        // Fetch available simulations
+        fetch("/get_simulations")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to fetch simulations");
+            }
+            return response.json();
+          })
+          .then((simulations) => {
+            simulationType.innerHTML = ""; // Clear any existing options
+            simulations.forEach((sim) => {
+              const option = document.createElement("option");
+              option.value = sim;
+              option.textContent = sim
+                .replace(/_/g, " ")
+                .replace(/\b\w/g, (l) => l.toUpperCase());
+              simulationType.appendChild(option);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching simulations:", error);
+            resultsContainer.innerHTML = `<p class="text-red-500">Error loading simulations: ${error.message}</p>`;
+          });
+
+        // Run simulation
+        runSimulationBtn.addEventListener("click", () => {
+          resultsContainer.innerHTML = "<p>Running simulation...</p>";
+
+          fetch("/simulate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              type: simulationType.value,
+              iterations: parseInt(simulationIterations.value),
+            }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Simulation failed");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              if (data.success) {
+                resultsContainer.innerHTML = `
+                            <pre class="bg-white p-3 rounded overflow-auto">
+                                ${JSON.stringify(data.results, null, 2)}
+                            </pre>
+                        `;
+              } else {
+                throw new Error(data.error || "Unknown error");
+              }
+            })
+            .catch((error) => {
+              console.error("Simulation error:", error);
+              resultsContainer.innerHTML = `
+                        <p class="text-red-500">
+                            Error running simulation: ${error.message}
+                        </p>
+                    `;
+            });
+        });
+      });
+    </script>
+  </body>
+</html>
