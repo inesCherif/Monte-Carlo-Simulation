@@ -23,7 +23,7 @@ This project provides a web interface for running Monte Carlo simulations on var
 1. Clone the repository:
 
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/inesCherif/Monte-Carlo-Simulation.git
    ```
 
 2. Create a virtual environment:
