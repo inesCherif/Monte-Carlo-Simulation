@@ -63,9 +63,10 @@ This project provides a web interface for running Monte Carlo simulations on var
 - Dawah Timing
 
 
-
-
-
 https://github.com/user-attachments/assets/21a194ef-e4bf-4646-b8f8-71ee48f9416d
+
+## 📄 Project Report  
+For a detailed explanation of the project, methodology, and findings, refer to the full report:  
+📥 [Read the Report](https://docs.google.com/document/d/1faqSzgx9puFiAGUDFXggTbu3vo_tCQqTBxkZtmgApNk/edit?usp=sharing)
 
 
