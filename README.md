@@ -43,7 +43,7 @@ This project provides a web interface for running Monte Carlo simulations on var
 1. Navigate to the backend directory:
 
    ```bash
-   cd <backend_directory>
+   cd <simulations_webpage_directory>
    ```
 
 2. Run the Flask application:
