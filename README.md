@@ -62,3 +62,10 @@ This project provides a web interface for running Monte Carlo simulations on var
 - Quran Preservation
 - Dawah Timing
 
+
+
+
+
+https://github.com/user-attachments/assets/21a194ef-e4bf-4646-b8f8-71ee48f9416d
+
+
